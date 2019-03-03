@@ -1,0 +1,62 @@
+{% extends "main.html" %}
+
+{% block content %}
+<div class="row col-12 bg-secondary p-1"> 
+
+    <div class="col">
+        <form method="POST" action="{% url 'new_post_processing' %}" class="form-group">
+            {% csrf_token %}
+            
+            <div class="row">
+                <div class="col">
+                    <label for="event">Event Type:</label>
+                    <select name="event" class="form-control form-control-lg" required>
+                        {% for event in events %}
+                            <option name="event" value="{{event.id}}">{{event.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col">
+                    <label for="users_needed">Members Needed:</label>
+                    <input type="number" name="users_needed" class="form-control form-control-lg"/>
+                </div>
+            </div>
+            <br/>
+            <label for="title">Title:</label>
+            <input type="text" name="title" id="title" maxlength="100" class="form-control form-control-lg" placeholder="Ex. Competitve Games!" aria-describedby="body" required/>
+            <br/>
+            <label for="body">Body:</label>
+            <textarea name="body" id="body" class="form-control form-control-lg mx-auto" placeholder="Describe your event here!" aria-describedby="body" rows=5 required></textarea>
+            <br/>
+            <div class="row">
+                <div class="col">
+                    <label for="game">Game:</label>
+                    <select name="game" class="form-control form-control-lg required">
+                        {% for game in games %}
+                            <option name="game" value="{{game.id}}">{{game.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <br/>
+                <div class="col-sm">
+                    <label for="platform">Platform:</label>
+                    <select name="platform" class="form-control form-control-lg" required>
+                        {% for platform in platforms %}
+                            <option name="platform" value="{{platform.id}}">{{platform.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <br/>
+            
+            <label for="due">Start Date:</label>
+            <input type="datetime-local" name="due" class="form-control form-control-lg" required></input>
+            <br/>
+            <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+
+        </form>
+    </div>
+</div>
+
+{% endblock content %}
+

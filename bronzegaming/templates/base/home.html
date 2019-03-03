@@ -1,0 +1,72 @@
+{% extends "main.html" %}
+{% load static %}
+{% load thumbnail %}
+{% block content %}
+{% for post in posts %}
+<a class="text-light btn btn-secondary btn-block btn-lg" style="text-decoration: none" href="{% url 'view_post' post.id %}">
+    <div class="row bg-secondary p-1 mb-1 rounded d-flex align-content-stretch"> 
+
+        <div class="col-sm-auto text-center p-2">
+        {% thumbnail post.user.profile.profile_image "48x48" crop="center" as image %}
+            <img class="rounded-circle border border-warning" width="{{ image.width }}" height="{{image.height}}" src="{{ image.url }}" />
+            <small><span class="badge badge-dark"> {{post.user.username}} </span></small>
+        {% endthumbnail %}
+        </div>  
+
+        <div class="col-lg align-bottom text-left pt-3">
+            <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="{{post.event.name}}"><span class="h5"> {{post.event.short_name}}</button> - {{post.title|truncatechars:50}} </span>
+            
+        </div>  
+
+        
+        <div class="text-center ml-auto pt-1 col-4 col-md-4">
+            <div class="row">
+                <div class="col">
+                    {% if post.event.users_sign_up %}
+                    <small class='badge badge-warning'> {{ post.users_going.count }} going</small>
+                    {% else %}
+                    <small class='badge badge-warning'> {{ post.users_needed }} needed</small>   
+                    {% endif %}
+                </div>
+                <div class="col">
+                    {% thumbnail post.platform.image "32x32" crop="center" as image %}
+                    <img class="rounded-circle border border-warning" width="{{ image.width }}" height="{{image.height}}" src="{{ image.url }}"  /><br/>
+                    <small><span class='badge badge-dark'> {{ post.platform.name }} </span></small>
+                    {% endthumbnail %}
+                </div>
+                <div class="col">
+                    {% thumbnail post.game.image "32x32" crop="center" as image %}
+                    <img class="rounded-circle border border-warning" width="{{ image.width }}" height="{{image.height}}" src="{{ image.url }}" /><br/>
+                    <small><span class='badge badge-dark'> {{post.game.name }} </span></small>
+                    {% endthumbnail %}
+                </div>
+            </div>
+        </div>
+
+        
+    </div>
+</a>
+
+{% endfor %}
+
+<script>
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
+
+{% endblock content %}
+
+
+{% block sidebar %}
+
+<div class="row bg-dark rounded justify-content-between"> 
+        <div class="col-md-2">
+        {% thumbnail user.profile.profile_image "32x32" crop="center" as image %}
+            <img class="img-thumbnail" src="{{ image.url }}" /><br/>
+            <span class="text-warning small"> Hi, {{user.username}} </span>
+        {% endthumbnail %}
+        </div> 
+</div>
+
+{% endblock sidebar %}

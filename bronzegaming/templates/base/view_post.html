@@ -1,0 +1,97 @@
+{% extends "main.html" %}
+{% load thumbnail %}
+{% block content %}
+{% load tz %}
+<div class="row bg-secondary p-1"> 
+
+    <div class="col pb-3">
+        <div class="row ">
+        <div class="col-2-auto text-center p-3">
+                <a href="{% url 'view_user' post.user.id %}" style="text-decoration: none">
+                {% thumbnail post.user.profile.profile_image "64x64" crop="center" as image %}
+                <img class="rounded-circle border border-warning" width="{{ image.width }}" height="{{image.height}}" src="{{ image.url }}" /><br/>
+                <span class="badge badge-dark"> {{ post.user.username }} </span>
+                {% endthumbnail %}
+                </a>
+            </div>
+            <div class="col-lg-auto mr-auto pb-3 p-2">
+                <div class='h3'> {{post.title}} </div>
+                <span class="badge badge-warning"> <small>Starts:</small> {{post.due}}</span>
+            </div>
+        <div class="row"> 
+            <div class="col-md-auto text-center my-auto">  
+            {% if post.event.users_needed %}
+                {% if user.is_authenticated %}
+                    <a href="{% url 'post_going' post.id %}" style="text-decoration: none"><span class='badge badge-dark p-3'> <h2>{{ post.users_needed }}</h2> needed</span></a>
+                {% else %}
+                    <span class='badge badge-dark p-3'> <h2>{{ post.users_needed }}</h2> needed</span>
+                {% endif %}
+            {% else %}
+                {% if user.is_authenticated %}
+                    <a href="{% url 'post_going' post.id %}" style="text-decoration: none"><span class='badge badge-dark p-3'> <h2>{{ post.users_going.count }}</h2> going</span></a>
+                {% else %}
+                    <span class='badge badge-dark p-3'> <h2>{{ post.users_going.count }}</h2> going</span>
+                {% endif %}
+            {% endif %}
+                
+                
+            </div>
+            <div class="col-md-auto text-center my-auto">
+                {% thumbnail post.platform.image "64x64" crop="center" as image %}
+                <img class="rounded-circle border border-warning" width="{{ image.width }}" height="{{image.height}}" src="{{ image.url }}"  /><br/>
+                <span class='small text-warning'> {{ post.platform.name }} </span>
+                {% endthumbnail %}
+            </div>
+            <div class="col-md-auto text-center float-right my-auto">
+                {% thumbnail post.game.image "64x64" crop="center" as image %}
+                <img class="rounded-circle border border-warning" width="{{ image.width }}" height="{{image.height}}" src="{{ image.url }}" /><br/>
+                <span class='small text-warning'> {{post.game.name }} </span>
+                {% endthumbnail %}
+            </div>
+        </div>
+        
+        </div>
+        <div class="row ">
+            <div class="col bg-dark p-3">
+                {{ post.body }}
+            </div>
+        </div>
+    {% for comment in comments %}
+        <div class="row mt-1 border border-warning">
+            <div class="col-auto bg-dark p-3 text-center">
+                {% thumbnail comment.user.profile.profile_image "32x32" crop="center" as image %}
+                <a href="{% url 'view_user' comment.user.id %}" style="text-decoration: none">
+                <img class="rounded-circle border border-warning" width="{{ image.width }}" height="{{image.height}}" src="{{ image.url }}"  /><br/>
+                <span class='small text-warning '> {{ comment.user.username }} </span>
+                </a>
+                {% endthumbnail %}
+            </div>
+            <div class="col bg-secondary p-2 ">
+                {{ comment.text }}<br/>
+                <small class="text-dark"> {{comment.created}} </small>
+            </div>
+        </div>
+    {% endfor %}
+    <div class="row mt-1 bg-dark">
+        <div class="col justify-content-center p-2">
+        {% if user.is_authenticated %}
+            <form action="{% url 'new_comment' post.id %}" method="POST" class="form-group">
+            {% csrf_token %}
+                <input class="form-control form-control-lg" type="text" name="text" placeholder="Comment..." required/>
+                <button type="submit" class="mt-1 btn btn-warning btn-lg btn-block">Submit Comment</button>
+            </form>
+        {% else %}
+            <div> Please login to comment </div>
+        {% endif %}
+        </div>
+    </div>
+    </div>
+</div>
+{% endblock content %}
+
+
+{% block sidebar %}
+
+<p> SIDEBAR!!! </p>
+
+{% endblock sidebar %}

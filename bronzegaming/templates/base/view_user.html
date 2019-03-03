@@ -1,0 +1,58 @@
+{% extends "main.html" %}
+{% load thumbnail %}
+{% block content %}
+<div class="row bg-secondary p-1"> 
+
+    <div class="col pb-3">
+        <div class="row ">
+        <div class="col-2-auto text-center p-3">
+                {% thumbnail selected_user.profile.profile_image "64x64" crop="center" as image %}
+                <img class="rounded-circle border border-warning" width="{{ image.width }}" height="{{image.height}}" src="{{ image.url }}" /><br/>
+                <span class="badge badge-dark"><small></small> {{ selected_user.username }} </span>
+                {% endthumbnail %}
+            </div>
+            <div class="col-lg-auto mr-auto pb-3 p-2">
+                
+                {% for platform in selected_user.profile.platforms.all %}
+                    <span class='badge badge-dark'> {{platform.name}}</span>
+                {% endfor %}
+                <br/>
+                {% for game in selected_user.profile.games.all %}
+                    <span class='badge badge-warning'> {{game.name}}</span>
+                {% endfor %}
+            </div>
+        <div class="row"> 
+            <div class="col-md-auto text-center mt-auto pb-1">  
+                
+            </div>
+            <div class="col-md-auto text-center ">
+                
+                <span class='small text-warning'> </span>
+                
+            </div>
+            <div class="col-md-auto text-center float-right">
+                
+                
+                <span class='small text-warning'>  </span>
+                
+            </div>
+        </div>
+        
+        </div>
+        <div class="row ">
+            <div class="col bg-dark p-3">
+                {{ post.body }}
+            </div>
+        </div>
+    
+    
+    </div>
+</div>
+{% endblock content %}
+
+
+{% block sidebar %}
+
+<p> SIDEBAR!!! </p>
+
+{% endblock sidebar %}
