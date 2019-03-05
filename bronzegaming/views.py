@@ -57,8 +57,10 @@ def new_comment(request, post_id):
 
 def view_user(request, user_id):
     selected_user = models.User.objects.get(id=user_id)
+    user_posts = models.Post.objects.filter(user=user_id)
     context = {
         'selected_user' : selected_user,
+        'user_posts' : user_posts,
     }
     return render(request,'base/view_user.html', context)
 
